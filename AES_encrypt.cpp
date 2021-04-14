@@ -106,10 +106,10 @@ void SubBytes(unsigned char state[][4]) {
 	
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
-			MSBs = (sub & 0xf0);
+			MSBs = (state[i][j] & 0xf0);
 			MSBs >>= 4;
-			LSBs = (sub & 0x0f);
-			state[i][j] = s_box[MSBs][
+			LSBs = (state[i][j] & 0x0f);
+			state[i][j] = s_box[MSBs][LSBs];
 		}
 	}
 }
