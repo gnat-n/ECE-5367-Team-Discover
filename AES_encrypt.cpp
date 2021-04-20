@@ -147,27 +147,14 @@ void ShiftRows(unsigned char state[][4]) {
 	}
 }
 void MixColumns(unsigned char state[][4]) {
-	
 	unsigned char temp[4][4];
-	temp[0][0] = (unsigned char)(m2[state[0][0]]^ m3[state[1][0]]^ state[2][0]^ state[3][0]);	//[2][3][1][1]	
-	temp[1][0] = (unsigned char)(state[0][0]^ m2[state[1][0]]^ m3[state[2][0]] ^ state[3][0]);	//[1][2][3][1]	
-	temp[2][0] = (unsigned char)(state[0][0]^ state[1][0]^ m2[state[2][0]]^ m3[state[3][0]]);	//[1][1][2][3]	
-	temp[3][0] = (unsigned char)(m3[state[0][0]]^ state[1][0]^ state[2][0]^ m2[state[3][0]]);	//[3][1][1][2]
+	for (int i = 0; i < 4; i++) {
+		temp[0][i] = (unsigned char)(m2[state[0][i]] ^ m3[state[1][i]] ^ state[2][i] ^ state[3][i]);
+		temp[1][i] = (unsigned char)(state[0][i] ^ m2[state[1][i]] ^ m3[state[2][i]] ^ state[3][i]);
+		temp[2][i] = (unsigned char)(state[0][i] ^ state[1][i] ^ m2[state[2][i]] ^ m3[state[3][i]]);	
+		temp[3][i] = (unsigned char)(m3[state[0][i]] ^ state[1][i] ^ state[2][i] ^ m2[state[3][i]]);	
 
-	temp[0][1] = (unsigned char)(m2[state[0][1]]^ m3[state[1][1]]^ state[2][1]^ state[3][1]);	//[2][3][1][1]	
-	temp[1][1] = (unsigned char)(state[0][1]^ m2[state[1][1]]^ m3[state[2][1]]^ state[3][1]);	//[1][2][3][1]	
-	temp[2][1] = (unsigned char)(state[0][1]^ state[1][1]	^ m2[state[2][1]]^ m3[state[3][1]]);	//[1][1][2][3]	
-	temp[3][1] = (unsigned char)(m3[state[0][1]]^ state[1][1]^ state[2][1]^ m2[state[3][1]]);	//[3][1][1][2]
-
-	temp[0][2] = (unsigned char)(m2[state[0][2]]^ m3[state[1][2]]^ state[2][2]^ state[3][2]);	//[2][3][1][1]	
-	temp[1][2] = (unsigned char)(state[0][2]^ m2[state[1][2]]^ m3[state[2][2]]^ state[3][2]);	//[1][2][3][1]	
-	temp[2][2] = (unsigned char)(state[0][2]^ state[1][2]	^ m2[state[2][2]]^ m3[state[3][2]]);	//[1][1][2][3]	
-	temp[3][2] = (unsigned char)(m3[state[0][2]]^ state[1][2]^ state[2][2]	^ m2[state[3][2]]);	//[3][1][1][2]
-
-	temp[0][3] = (unsigned char)(m2[state[0][3]]^ m3[state[1][3]]^ state[2][3]^ state[3][3]);	//[2][3][1][1]	
-	temp[1][3] = (unsigned char)(state[0][3]^ m2[state[1][3]]^ m3[state[2][3]]^ state[3][3]);	//[1][2][3][1]	
-	temp[2][3] = (unsigned char)(state[0][3]^ state[1][3]	^ m2[state[2][3]]^ m3[state[3][3]]);	//[1][1][2][3]	
-	temp[3][3] = (unsigned char)(m3[state[0][3]]^ state[1][3]^ state[2][3]	^ m2[state[3][3]]);	//[3][1][1][2]
+	}
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
