@@ -252,44 +252,13 @@ void InvShiftRows(unsigned char state[][4]) {
 	}
 }
 void InvMixColumns(unsigned char state[][4]) {
-	/* (Values, not index)
-	[s0] [s4] [s8]	[s12]		[0E][0B][0D][09]
-	[s1] [s5] [s9]	[s13]		[09][0E][0B][0D]
-	[s2] [s6] [s10] [s14]		[0D][09][0E][0B]
-	[s3] [s7] [s11] [s15]		[0B][0D][09][0E]
-
-	[14][11][13][9]		[s0]	[s0']
-	[9][14][11][13]  *	[s1] =	[s1']
-	[13][9][14][11]		[s2]	[s2']
-	[11][13][9][14]		[s3]	[s3']
-
-	Example:
-	[s0]
-	[s1]  * [14][11][13][9] = [s0']
-	[s2]
-	[s3]
-	*/
-
 	unsigned char temp[4][4];
-	temp[0][0] = (unsigned char)(m14[state[0][0]] ^ m11[state[1][0]] ^ m13[state[2][0]] ^ m9[state[3][0]]);	//[14][11][13][9]	
-	temp[1][0] = (unsigned char)(m9[state[0][0]] ^ m14[state[1][0]] ^ m11[state[2][0]] ^ m13[state[3][0]]);	//[9][14][11][13]	
-	temp[2][0] = (unsigned char)(m13[state[0][0]] ^ m9[state[1][0]] ^ m14[state[2][0]] ^ m11[state[3][0]]);	//[13][9][14][11]	
-	temp[3][0] = (unsigned char)(m11[state[0][0]] ^ m13[state[1][0]] ^ m9[state[2][0]] ^ m14[state[3][0]]);	//[11][13][9][14]
-
-	temp[0][1] = (unsigned char)(m14[state[0][1]] ^ m11[state[1][1]] ^ m13[state[2][1]] ^ m9[state[3][1]]);	//[14][11][13][9]	
-	temp[1][1] = (unsigned char)(m9[state[0][1]] ^ m14[state[1][1]] ^ m11[state[2][1]] ^ m13[state[3][1]]);	//[9][14][11][13]
-	temp[2][1] = (unsigned char)(m13[state[0][1]] ^ m9[state[1][1]] ^ m14[state[2][1]] ^ m11[state[3][1]]);	//[13][9][14][11]
-	temp[3][1] = (unsigned char)(m11[state[0][1]] ^ m13[state[1][1]] ^ m9[state[2][1]] ^ m14[state[3][1]]);	//[11][13][9][14]
-
-	temp[0][2] = (unsigned char)(m14[state[0][2]] ^ m11[state[1][2]] ^ m13[state[2][2]] ^ m9[state[3][2]]);	//[14][11][13][9]		
-	temp[1][2] = (unsigned char)(m9[state[0][2]] ^ m14[state[1][2]] ^ m11[state[2][2]] ^ m13[state[3][2]]);	//[9][14][11][13]
-	temp[2][2] = (unsigned char)(m13[state[0][2]] ^ m9[state[1][2]] ^ m14[state[2][2]] ^ m11[state[3][2]]);	//[13][9][14][11]	
-	temp[3][2] = (unsigned char)(m11[state[0][2]] ^ m13[state[1][2]] ^ m9[state[2][2]] ^ m14[state[3][2]]);	//[11][13][9][14]
-
-	temp[0][3] = (unsigned char)(m14[state[0][3]] ^ m11[state[1][3]] ^ m13[state[2][3]] ^ m9[state[3][3]]);	//[14][11][13][9]	
-	temp[1][3] = (unsigned char)(m9[state[0][3]] ^ m14[state[1][3]] ^ m11[state[2][3]] ^ m13[state[3][3]]);	//[9][14][11][13]
-	temp[2][3] = (unsigned char)(m13[state[0][3]] ^ m9[state[1][3]] ^ m14[state[2][3]] ^ m11[state[3][3]]);	//[13][9][14][11]		
-	temp[3][3] = (unsigned char)(m11[state[0][3]] ^ m13[state[1][3]] ^ m9[state[2][3]] ^ m14[state[3][3]]);	//[11][13][9][14]
+	for (int i = 0; i < 4; i++) {
+		temp[0][i] = (unsigned char)(m14[state[0][i]] ^ m11[state[1][i]] ^ m13[state[2][i]] ^ m9[state[3][i]]);
+		temp[1][i] = (unsigned char)(m9[state[0][i]] ^ m14[state[1][i]] ^ m11[state[2][i]] ^ m13[state[3][i]]);	
+		temp[2][i] = (unsigned char)(m13[state[0][i]] ^ m9[state[1][i]] ^ m14[state[2][i]] ^ m11[state[3][i]]);	
+		temp[3][i] = (unsigned char)(m11[state[0][i]] ^ m13[state[1][i]] ^ m9[state[2][i]] ^ m14[state[3][i]]);	
+	}
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
