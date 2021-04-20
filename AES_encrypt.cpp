@@ -115,17 +115,6 @@ void SubBytes(unsigned char state[][4]) {
 	}
 }
 void ShiftRows(unsigned char state[][4]) {
-	/*	(Index, not values)
-		[0] [4] [8] [12]
-		[1] [5] [9] [13]
-		[2] [6] [10][14]
-		[3] [7] [11][15]
-	to
-		[0] [4] [8] [12]
-		[5] [9] [13][1]
-		[10][14][2] [6]
-		[15][3] [7] [11]
-	*/
 	unsigned char temp[4][4];
 	//1st row (No change)
 	temp[0][0] = state[0][0];
