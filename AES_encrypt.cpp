@@ -147,24 +147,7 @@ void ShiftRows(unsigned char state[][4]) {
 	}
 }
 void MixColumns(unsigned char state[][4]) {
-	/* (Values, not index)
-	[s0] [s4] [s8]	[s12]		[2][3][1][1]		
-	[s1] [s5] [s9]	[s13]		[1][2][3][1]		
-	[s2] [s6] [s10] [s14]		[1][1][2][3]		
-	[s3] [s7] [s11] [s15]		[3][1][1][2]		
-
-	[2]	[3]	[1]	[1]	[s0]	[s0']
-	[1]	[2]	[3]	[1]  *	[s1] =	[s1']
-	[1]	[1]	[2]	[3]	[s2]	[s2']
-	[3]	[1]	[1]	[2]	[s3]	[s3']
-
-	Example: 
-	[s0]
-	[s1]  * [2][3][1][1] = [s0']
-	[s2]
-	[s3]
-	*/
-
+	
 	unsigned char temp[4][4];
 	temp[0][0] = (unsigned char)(m2[state[0][0]]^ m3[state[1][0]]^ state[2][0]^ state[3][0]);	//[2][3][1][1]	
 	temp[1][0] = (unsigned char)(state[0][0]^ m2[state[1][0]]^ m3[state[2][0]] ^ state[3][0]);	//[1][2][3][1]	
