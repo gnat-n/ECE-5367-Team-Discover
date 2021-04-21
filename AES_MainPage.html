@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <section>
+        <h1 class = "header">AES-128 Encryption/Decryption</h1>
+        <h2 id = "subheader"> An online tool which perform encrption or decrption. AES is a symmetric block cipher that uses the same key for both encrypting and decrypting. </h2>
+        <div class = "box">
+            <div id= "text">
+                <form action>
+                    <input type = "KeyInput" placeholder ="Enter Key (16 length)">
+                    <textarea id = "TextInput" rows="4" cols="79" placeholder = "Enter Plain Text"></textarea>
+                    <p>OR</p>
+                    <input type = "file" id = "fileInput">
+
+
+                </form>
+            </div>
+        </div>
+        <div class="container">
+            <button id = "button1">Encrypt</button>
+            <button id = "button2">Decrypt</button>
+
+        </div>
+    </section>
+    <script src = "script.js"></script>
+
+</body>
+</html>
