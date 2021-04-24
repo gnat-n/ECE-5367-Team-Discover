@@ -13,3 +13,5 @@ https://braincoke.fr/blog/2020/08/the-aes-key-schedule-explained/#s-box
 https://en.wikipedia.org/wiki/Advanced_Encryption_Standard
 
 https://8gwifi.org/CipherFunctions.jsp
+
+https://teamdiscoveraes.netlify.app/
