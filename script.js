@@ -37,10 +37,33 @@ import {sbox, inv_sbox, m2, m3, m9, m11, m13, m14, roundConstants} from './table
 var state;
 var keySchedule;
 
+var fileInput = document.getElementById('fileInput');
+var fileData = [];
+
+fileInput.onchange = () =>{ 
+   let file = fileInput.files[0];
+   let reader = new FileReader();
+   reader.readAsText(file);
+   reader.onload = () =>{
+       fileData = reader.result;
+       console.log(fileData)
+   };
+   reader.onerror = () =>{
+       console.log(reader.error);
+   };
+}
+
 
 document.querySelector('#button1').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
-    var dataInput = document.getElementById('TextInput');
+    var dataInput;
+
+    if(fileData.isEmpty){
+        dataInput = document.getElementById('TextInput').value;
+    }
+    else{
+        dataInput = fileData;
+    }
 
     state = [[],[],[],[]];
     keySchedule = [];
@@ -54,7 +77,7 @@ document.querySelector('#button1').addEventListener('click', function(){
         return;
     }
 
-    if(dataInput.value.length <=0){
+    if(dataInput.length <=0){
         alert('Input data');
         return;
     }
@@ -69,13 +92,23 @@ document.querySelector('#button1').addEventListener('click', function(){
 
     document.getElementById('subheader').style.display = 'none';
     document.getElementById('output').style.display = 'flex';
+    document.getElementById('fileInput').value= null;
     document.getElementById('output').innerHTML= encryptedData.toUpperCase();
+
+
 });
 
 
 document.querySelector('#button2').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
     var dataInput = document.getElementById('TextInput');
+
+    if(fileData.isEmpty){
+        dataInput = document.getElementById('TextInput').value;
+    }
+    else{
+        dataInput = fileData;
+    }
 
     state = [[],[],[],[]];
     keySchedule = [];
@@ -89,7 +122,7 @@ document.querySelector('#button2').addEventListener('click', function(){
         return
     }
 
-    if(dataInput.value.length <=0){
+    if(dataInput.length <=0){
         alert('Input data');
         return;
     }
@@ -103,7 +136,10 @@ document.querySelector('#button2').addEventListener('click', function(){
 
     document.getElementById('subheader').style.display = 'none';
     document.getElementById('output').style.display = 'flex';
+    document.getElementById('fileInput').value= null;
     document.getElementById('output').innerHTML = decryptedData;
+
+
 
 });
 
@@ -118,10 +154,10 @@ let HexToDec = (x) => parseInt(x,16)
 const formatData = (data, dataType) =>{
     let arr = [];
     let maxLength = (dataType === "ascii")?16:32;
-    for(let i=0, pos = 0;i<data.value.length/maxLength;i++){
-        arr[i] = data.value.slice(pos,pos+maxLength);
+    for(let i=0, pos = 0;i<data.length/maxLength;i++){
+        arr[i] = data.slice(pos,pos+maxLength);
         pos+=maxLength;
-        if((i == data.value.length/maxLength - 1) && data.value.length%maxLength == 0 && dataType == "ascii"){
+        if((i == data.length/maxLength - 1) && data.length%maxLength == 0 && dataType == "ascii"){
             arr[i+1] = "";
         }
     }
