@@ -20,6 +20,7 @@
 }
 
 #subheader{
+    display:flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
@@ -38,12 +39,16 @@
     justify-content: center;
 }
 
-#text p{
+#or p{
     color:white;
     text-align: center;
     border-radius: 5px;
 }
 
+
+textarea::-webkit-input-placeholder {
+    text-align: center;
+}
 
  input[type = keyInput], input[type = file]{
     color:black;
@@ -57,9 +62,27 @@
     margin: 10 auto;
 }
 
-textarea{
+#outputBox p{
+    display: none;
     color:black;
     text-align: center;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 2em;
+    width: 100%;
+    max-width: 700px;
+    margin: 10 auto;
+    text-align: left;
+    font-size: .9em;
+    word-break: break-all;
+
+
+}
+
+textarea{
+    color:black;
+    text-align: left;
     background-color: white;
     border-radius: 5px;
     padding: 10px;
@@ -74,6 +97,8 @@ input[type = file]{
     margin-left: 25%;
     margin-top: 5px;
 }
+
+
 
 
 .container {
@@ -126,31 +151,4 @@ input[type = file]{
 }
 
 
-
-
-#recording{
-    display:none;
-    width:300px;
-    height: 100px;
-    border: none;
-    color:white;
-    background-color: #25252A;
-    border-radius: 10px;
-    font-size: 2rem;
-    border:3px solid #42FBF2;
-    outline: none;
-    animation: r 2.5s infinite;
-}
-
-@keyframes r {
-    0%{
-        background-color: #25252A;
-    }
-    50%{
-        background-color: #42FBF2;
-    }
-    100% {
-        background-color: #25252A;
-    }
-}
 
