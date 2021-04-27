@@ -13,18 +13,17 @@
 <body>
     <section>
         <h1 class = "header">AES-128 Encryption/Decryption</h1>
-        <h2 id = "subheader"> An online t tool which perform encrption or decrption. AES is a symmetric block cipher that uses the same key for both encrypting and decrypting. </h2>
+        <h2 id = "subheader"> An online tool which perform encrption or decrption. AES is a symmetric block cipher that uses the same key for both encrypting and decrypting. </h2>
         <div class = "box">
-            <div id= "text">
-                <form action>
-                    <input type = "KeyInput" placeholder ="Enter Key (16 length)">
-                    <textarea id = "TextInput" rows="4" cols="79" placeholder = "Enter Plain Text"></textarea>
-                    <p>OR</p>
-                    <input type = "file" id = "fileInput">
-
-
-                </form>
-            </div>
+            <form action>
+                <input type = "KeyInput" id = "key" placeholder ="Enter Key (16 length)">
+                <textarea id = "TextInput" rows="4" cols="79" placeholder = "Enter Plain Text"></textarea>
+                <!--
+                <div id= "or"><p>OR</p></div>
+                <input type = "file" id = "fileInput">
+                -->
+            </form>
+            <div id = "outputBox"><p id = output></p></div>
         </div>
         <div class="container">
             <button id = "button1">Encrypt</button>
@@ -32,7 +31,6 @@
 
         </div>
     </section>
-    <script src = "script.js"></script>
-
+    <script type = "module" src = "script.js"></script>
 </body>
 </html>
