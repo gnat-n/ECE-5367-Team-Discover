@@ -37,6 +37,7 @@ import {sbox, inv_sbox, m2, m3, m9, m11, m13, m14, roundConstants} from './table
 var state;
 var keySchedule;
 
+var isFile = 0;
 var fileInput = document.getElementById('fileInput');
 var fileData = [];
 
@@ -45,6 +46,7 @@ fileInput.onchange = () =>{
    let reader = new FileReader();
    reader.readAsText(file);
    reader.onload = () =>{
+       isFile = 1;
        fileData = reader.result;
        console.log(fileData)
    };
@@ -56,14 +58,14 @@ fileInput.onchange = () =>{
 
 document.querySelector('#button1').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
-    var dataInput;
+    var dataInput= document.getElementById('TextInput').value;
+    console.log(dataInput);
 
-    if(fileData.isEmpty){
-        dataInput = document.getElementById('TextInput').value;
-    }
-    else{
+    if(isFile){
         dataInput = fileData;
+        isFile = 0;
     }
+  
 
     state = [[],[],[],[]];
     keySchedule = [];
@@ -101,15 +103,13 @@ document.querySelector('#button1').addEventListener('click', function(){
 
 document.querySelector('#button2').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
-    var dataInput = document.getElementById('TextInput');
+    var dataInput = document.getElementById('TextInput').value;
 
-    if(fileData.isEmpty){
-        dataInput = document.getElementById('TextInput').value;
-    }
-    else{
+    if(isFile){
         dataInput = fileData;
+        isFile = 0;
     }
-
+  
     state = [[],[],[],[]];
     keySchedule = [];
 
