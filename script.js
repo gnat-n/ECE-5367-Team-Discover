@@ -3,11 +3,14 @@
 /*  AES 128 Encryption/Decryption in JavaScript                 */
 /*  ECE 5367 Team Discover                                      */
 /*  Team Memebers:                                              */
-/*                                                              */     
+/*  Charles Nguyen                                              */
+/*  Kevin Nguyen                                                */
+/*  Nhat Nguyen                                                 */
+/*  Christopher Montealvo                                       */
+/*  Thien Tao                                                   */         
 /*--------------------------------------------------------------*/
 
 /*
-
     This is a an implementation of AES (Rigndael cipher) encryption/decryption intended to 
     demonstrate the process of the algorithm. Implementation lacks optimization and should 
     be use when performance is not a priority. Both the encrypted data output and decrypted 
@@ -32,6 +35,7 @@
 
 */
 
+//Import predefined tables from tables.js
 import {sbox, inv_sbox, m2, m3, m9, m11, m13, m14, roundConstants} from './tables.js';
 
 var state;
@@ -41,26 +45,32 @@ var isFile = 0;
 var fileInput = document.getElementById('fileInput');
 var fileData = [];
 
+//Will run once user upload a file
 fileInput.onchange = () =>{ 
    let file = fileInput.files[0];
    let reader = new FileReader();
+   //Read content of file
    reader.readAsText(file);
    reader.onload = () =>{
        isFile = 1;
+       //Store file content in fileData
        fileData = reader.result;
        console.log(fileData)
    };
    reader.onerror = () =>{
+       //If any error, output to console for debugging
        console.log(reader.error);
    };
 }
 
 
+//Will run once user presses "Encrypt"
 document.querySelector('#button1').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
     var dataInput= document.getElementById('TextInput').value;
     console.log(dataInput);
 
+    //Check if the plain text was from a file
     if(isFile){
         dataInput = fileData;
         isFile = 0;
@@ -70,9 +80,6 @@ document.querySelector('#button1').addEventListener('click', function(){
     state = [[],[],[],[]];
     keySchedule = [];
 
-    //keyInput.value = 'Thats my Kung Fu';
-    //dataInput.value = 'Two One Nine Two'
-    //Answer: 29C3505F571420F6402299B31A02D73AB3E46F11BA8D2B97C18769449A89E868
 
     if(keyInput.value.length != 16){
         alert('Length of Key need to be 16 for AES-128');
@@ -84,10 +91,12 @@ document.querySelector('#button1').addEventListener('click', function(){
         return;
     }
 
+    //Format the data. Split plain text into 16 bytes
     let formattedData = formatData(dataInput,"ascii");
     let encryptedData = "";
 
-
+    //Beginning encrypting the data.
+    //Loop will run once if length is less or equal to 16 bytes.
     for(let i = 0;i<formattedData.length;i++){
         encryptedData+= AES_encrypt(keyInput.value, formattedData[i]);
     }
@@ -95,6 +104,7 @@ document.querySelector('#button1').addEventListener('click', function(){
     document.getElementById('subheader').style.display = 'none';
     document.getElementById('output').style.display = 'flex';
     document.getElementById('fileInput').value= null;
+    //Output cyphertext back to user
     document.getElementById('output').innerHTML= encryptedData.toUpperCase();
 
 
@@ -105,6 +115,7 @@ document.querySelector('#button2').addEventListener('click', function(){
     var keyInput = document.getElementById('key');
     var dataInput = document.getElementById('TextInput').value;
 
+    //Check if the plain text was from a file
     if(isFile){
         dataInput = fileData;
         isFile = 0;
@@ -113,9 +124,6 @@ document.querySelector('#button2').addEventListener('click', function(){
     state = [[],[],[],[]];
     keySchedule = [];
 
-    //keyInput.value = 'Thats my Kung Fu';
-    //dataInput.value = '29C3505F571420F6402299B31A02D73AB3E46F11BA8D2B97C18769449A89E868'
-    //Answer: Two One Nine Two
 
     if(keyInput.value.length != 16){
         alert('Length of Key need to be 16 for AES-128');
@@ -130,6 +138,7 @@ document.querySelector('#button2').addEventListener('click', function(){
     let formattedData = formatData(dataInput,"hex");
     let decryptedData = "";
 
+    //Begin decrypting cyphertext
     for(let i = 0;i<formattedData.length;i++){
         decryptedData+= AES_decrypt(keyInput.value, formattedData[i], i==formattedData.length-1?1:0);
     }
@@ -137,6 +146,8 @@ document.querySelector('#button2').addEventListener('click', function(){
     document.getElementById('subheader').style.display = 'none';
     document.getElementById('output').style.display = 'flex';
     document.getElementById('fileInput').value= null;
+
+    //output decoded data to user
     document.getElementById('output').innerHTML = decryptedData;
 
 
@@ -145,12 +156,22 @@ document.querySelector('#button2').addEventListener('click', function(){
 
 
 
-
+//Helper functions
 let ASCItoHex = (x) => x.charCodeAt(0).toString(16)
 let DecToASCI = (x) => String.fromCharCode(x)
 let DecToHex = (x) => Number(x).toString(16)
 let HexToDec = (x) => parseInt(x,16)
 
+const printState = () =>{
+    const temp = state.map(value => value.map(DecToHex));
+    console.table(temp);
+}
+const printKeySchedule = () =>{
+    const temp = keySchedule.map(value => value.map(DecToHex));
+    console.table(temp);
+}
+
+//Format data into 16 bytes
 const formatData = (data, dataType) =>{
     let arr = [];
     let maxLength = (dataType === "ascii")?16:32;
@@ -163,16 +184,10 @@ const formatData = (data, dataType) =>{
     }
     return arr;
 }
-const printState = () =>{
-    const temp = state.map(value => value.map(DecToHex));
-    console.table(temp);
-}
-const printKeySchedule = () =>{
-    const temp = keySchedule.map(value => value.map(DecToHex));
-    console.table(temp);
-}
 
+//AES encryption function
 const AES_encrypt = (key, data) =>{
+    //If KeySchedule has not been created yet, create a empty 4x44 key schedule
     if(!keySchedule.length){
         for(let i = 0, pos = 0; i<44;i++){
             keySchedule.push([0]);
@@ -182,6 +197,7 @@ const AES_encrypt = (key, data) =>{
         }
     }
 
+    //Place plain text into a 4x4 array, implement padding if text length is less than 16
     for(let i = 0, pos = 0; i<4 ;i++){
         for(let j = 0; j<4; j++){
             if(pos < data.length){
@@ -195,6 +211,7 @@ const AES_encrypt = (key, data) =>{
         }
     }
 
+    //Fill in key schedule 
     for (let i = 1; i < 11; i++) {
 		KeyExpansion(i);
 	}
@@ -210,6 +227,7 @@ const AES_encrypt = (key, data) =>{
 	ShiftRows();
 	AddRoundKeys(10);
 
+
     let output = "";
     for(let i=0;i<4;i++){
         for(let j =0;j<4;j++){
@@ -220,10 +238,12 @@ const AES_encrypt = (key, data) =>{
             output+=DecToHex(state[j][i]);
         }
     }
+
     return output;
 }
 
 const AES_decrypt = (key, data, isLast) => {
+    //If KeySchedule has not been created yet, create a empty 4x44 key schedule
     if(!keySchedule.length){
         for(let i = 0, pos = 0; i<44;i++){
             keySchedule.push([0]);
